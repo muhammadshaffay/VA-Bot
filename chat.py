@@ -1,5 +1,6 @@
 # Imports
 import torch, transformers
+from langchain.llms import Together
 from langchain.chains import LLMChain
 from langchain.prompts import PromptTemplate
 from langchain.llms import HuggingFacePipeline
@@ -103,8 +104,20 @@ class Bot:
         ## LLM Setup using Hugging Face's pipeline
         llm = HuggingFacePipeline(pipeline=pipe, model_kwargs={'temperature': 0})
         return llm
+    
+    def together_ai(self):
 
-    def build_chain(self):
+        api_key = ""
+        llm = Together(
+            model="togethercomputer/llama-2-7b-chat",
+            temperature=0.5,
+            max_tokens=192,
+            together_api_key=api_key,
+        )
+
+        return llm
+
+    def build_chain(self, use_api=False):
         """
         This function creates and initializes a text generation chain using the provided language model (LLM), prompt, and memory.
 
@@ -118,7 +131,10 @@ class Bot:
         """
         # Load LLM
         prompt, memory = self.prompt_template()
-        llm = self.load_LLM()
+        if use_api is True:
+            llm = self.together_ai()
+        else:
+            llm = self.load_LLM()
 
         # Create and initialize a text generation chain using LLM, prompt, and memory
         llm_chain = LLMChain(llm=llm, prompt=prompt, verbose=False, memory=memory)

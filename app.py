@@ -12,7 +12,7 @@ with st.expander("Disclaimer"):
 # Load LLM
 if "bot" not in st.session_state:
     bot = Bot()
-    st.session_state.bot = bot.build_chain()
+    st.session_state.bot = bot.build_chain(use_api=True)
 
 # Side Bar
 with st.sidebar:

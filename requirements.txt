@@ -9,3 +9,6 @@ einops
 langchain 
 streamlit 
 peft
+ffmpeg-python 
+pydub
+streamlit-audiorecorder
